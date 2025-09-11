@@ -2,13 +2,15 @@
 #include <raylib.h>
 
 class Constants {
-public:
-    const static int SCREEN_WIDTH = 800;
-    const static int SCREEN_HEIGHT = 600;
-    const static int CELL_SIZE = 30;
-    
+public:    
+    const static int OFFSET_MOUSE = 15;
+
     const static Color BG_COLOR;
-    const static Color CELL_COLOR;
+    const static Color CELL_COLOR1;
+    const static Color CELL_COLOR2;
     const static Color GRID_BORDER_COLOR;
     static int gridSize;
+
+    static Vector2 GameBoardCoords;
+
 };
