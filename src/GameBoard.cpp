@@ -78,7 +78,7 @@ void GameBoard::drawCurrentPanel() {
     }
 }
 
-void GameBoard::setPlayerMove(Vector2 mousePos, Piece p) {
+void GameBoard::setPlayerMove(Vector2 mousePos, Piece piece) {
     int row_idx = (mousePos.x / cellSize);
     int col_idx = (mousePos.y / cellSize);
     if (row_idx == 0 || col_idx == 0 || row_idx > boardSize || col_idx > boardSize) {
@@ -89,8 +89,10 @@ void GameBoard::setPlayerMove(Vector2 mousePos, Piece p) {
         col_idx -= 1;
     }
 
-    if (row_idx != -1 && col_idx != -1 && IsMouseButtonDown(0)) {
-        GAME_BOARD[col_idx][row_idx] = p;
+    if (row_idx != -1 && col_idx != -1 && IsMouseButtonDown(0) && checkValidMove(row_idx, col_idx)) {
+        GAME_BOARD[col_idx][row_idx] = Piece::o;
+    } else if (row_idx != -1 && col_idx != -1 && IsMouseButtonDown(1)&& checkValidMove(row_idx, col_idx)) {
+        GAME_BOARD[col_idx][row_idx] = Piece::x;
     }
 }
 
@@ -192,21 +194,40 @@ bool GameBoard::checkOrderWin() {
     return false;
 }
 
-// bool GameBoard::checkGameOver() {
-//     if (checkChaosWin()) {
-//         cout << "GGs, Chaos Wins!" << endl;
-//         return true;
-//     } else if (checkOrderWin())
-//     {
-//         cout << "GGs, Order Wins" << endl;
-//         return true;
-//     } else if (IsKeyPressed(KEY_Q)) {
-//         cout << "You Resigned" << endl;
-//         return true;
-//     }
+bool GameBoard::checkChaosWin() {
+    for (vector<Piece> vec : GAME_BOARD) {
+        for (Piece piece : vec) {
+            if (piece == Piece::na) {
+                return false;
+            }
+        }
+    }
+    
+    return !checkOrderWin();
+}
 
-//     return false;
-// }
+bool GameBoard::checkGameOver() {
+    if (checkChaosWin()) {
+        cout << "GGs, Chaos Wins!" << endl;
+        return true;
+    } else if (checkOrderWin())
+    {
+        cout << "GGs, Order Wins" << endl;
+        return true;
+    } else if (IsKeyPressed(KEY_Q)) {
+        cout << "You Resigned" << endl;
+        return true;
+    }
+
+    return false;
+}
+
+bool GameBoard::checkValidMove(int x, int y) {
+    if (GAME_BOARD[y][x] == Piece::na) {
+        return true;
+    } 
+    return false;
+}
 
 GameBoard::~GameBoard() {
     UnloadTexture(checkTexture);

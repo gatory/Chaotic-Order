@@ -28,11 +28,13 @@ int main() {
         BeginDrawing();
         ClearBackground(Constants::BG_COLOR);
         game.drawCurrentPanel();
-        game.setPlayerMove(GetMousePosition(), Piece::x);
-        // cout << game.getAndCheckDiagonal(6, 1, 9, -1, 1) << endl; 
-        cout << game.checkOrderWin() << endl;
+        game.setPlayerMove(GetMousePosition(), Piece::na);
+        if (game.checkGameOver()) {
+            break;
+        }
+        // cout << game.checkOrderWin() << endl;
         // game.checkOrderWin();
-        // game.printBoard();
+        game.printBoard();
         EndDrawing();
     }
 

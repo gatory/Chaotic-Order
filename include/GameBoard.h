@@ -29,13 +29,13 @@ public:
 
     void drawCurrentPanel();
 
-    // bool checkChaosWin();
+    bool checkChaosWin();
 
     bool checkOrderWin();
 
-    // bool checkGameOver();
+    bool checkGameOver();
 
-    // void checkValidMove();
+    bool checkValidMove(int x, int y);
 
     bool getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, int dy);
 
@@ -43,7 +43,7 @@ public:
 
     void printVectorValue(vector<Piece> vec);
 
-    void setPlayerMove(Vector2 mousePos, Piece p);
+    void setPlayerMove(Vector2 mousePos, Piece piece);
 
     ~GameBoard();
 };
