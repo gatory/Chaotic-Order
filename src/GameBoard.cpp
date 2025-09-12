@@ -13,13 +13,13 @@ GameBoard::GameBoard(int size, int windHeight):
     CHAOS_WIN(false),
     ORDER_WIN(false),
     RESIGNATION(false),
-    boardSize(size + 2)
+    gamePanel(size + 2),
+    boardSize(size)
 {
-    cellSize = windHeight / boardSize;
-    // Initialize board state
-    for (int row = 0; row < size; row++) {
+    cellSize = windHeight / gamePanel;
+    for (int row = 0; row < boardSize; row++) {
         vector<Piece> temp;
-        for (int col = 0 ; col < size; col++) {
+        for (int col = 0 ; col < boardSize; col++) {
             temp.push_back(Piece::na);
         }
         GAME_BOARD.push_back(temp);
@@ -39,14 +39,35 @@ void GameBoard::printBoard() {
     }
 }
 
-void GameBoard::drawCurrentBoard() {
+void GameBoard::drawCurrentPanel() {
     srand(time(0));
-    cout << random << endl;
-    for (int row = 0; row < boardSize; row++) {
-        for (int col = 0; col < boardSize; col++) {
+    for (int row = 0; row < gamePanel; row++) {
+        for (int col = 0; col < gamePanel; col++) {
             int random = rand();
-            Cell cell = Cell(row * cellSize, col* cellSize, random);
-            cell.drawCell(cellSize);
+            Cell cell = Cell(row, col, cellSize, random);
+            cell.drawCell();
         }
     }
 }
+
+void GameBoard::setPlayerMove(Vector2 mousePos, Piece p) {
+    int row_idx = (mousePos.x / cellSize);
+    int col_idx = (mousePos.y / cellSize);
+    if (row_idx == 0 || col_idx == 0 || row_idx > boardSize || col_idx > boardSize) {
+        row_idx = -1;
+        col_idx = -1;
+    } else {
+        row_idx -= 1;
+        col_idx -= 1;
+    }
+
+    if (row_idx != -1 && col_idx != -1 && IsMouseButtonDown(0)) {
+        GAME_BOARD[col_idx][row_idx] = p;
+    }
+}
+
+GameBoard::~GameBoard() {
+    UnloadTexture(checkTexture);
+    UnloadTexture(crossTexture);
+}
+

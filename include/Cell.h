@@ -4,19 +4,24 @@
 #include <iostream>
 #include <raylib.h>
 #include "Constants.h"
+#include "PieceType.h"
 
 class Cell
 {
 private:
     Vector2 vec;
     Color color;
-    int cellSize;
+    int size;
+    float ratio;
+    Piece piece;
 
 public:
-    // Normal cell
-    Cell(float x, float y, int randm);
 
-    void drawCell(int cellSize);
+    Cell(float x, float y, int cellSize, int random);
+
+    void drawCell();
+
+    Piece getPiece();
 
     ~Cell();
 };

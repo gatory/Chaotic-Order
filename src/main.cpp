@@ -2,6 +2,8 @@
 #include <iostream>
 #include "../include/GameBoard.h"
 #include "../include/Constants.h"
+#include "../include/Cell.h"
+#include "../include/PieceType.h"
 // #include "../include/CheckPiece.h"
 
 using namespace std;
@@ -21,7 +23,9 @@ int main() {
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(Constants::BG_COLOR);
-        game.drawCurrentBoard();
+        game.drawCurrentPanel();
+        game.setPlayerMove(GetMousePosition(), Piece::x);
+        game.printBoard();
         EndDrawing();
     }
 

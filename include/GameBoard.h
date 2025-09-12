@@ -15,26 +15,31 @@ private:
     bool RESIGNATION;
     int boardSize;
     int cellSize;
+    int gamePanel;
+
+    Texture2D checkTexture;
+    Texture2D crossTexture;
     static vector<vector<Piece>> GAME_BOARD;
     
 
 public:
-    GameBoard(int size, int windowWidth);
+    GameBoard(int size, int windowHeight);
 
     void printBoard();
 
-    void drawCurrentBoard();
+    void drawCurrentPanel();
 
-    // void checkChaosWin();
+    void checkChaosWin();
 
-    // void checkOrderWin();
+    void checkOrderWin();
 
     // void checkResignation();
 
     // void checkValidMove();
 
-    // void setPlayerMove();
+    void setPlayerMove(Vector2 mousePos, Piece p);
 
+    ~GameBoard();
 };
 
 #endif
