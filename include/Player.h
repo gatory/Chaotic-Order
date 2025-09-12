@@ -1,3 +1,6 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <iostream>
 #include "ObjectiveType.h"
 #include "PieceType.h"
@@ -19,7 +22,9 @@ private:
 public:
     Player(ObjectiveType objective, bool hasNextTurn);
 
-    virtual struct Descision makeDecision() = 0;
+    virtual struct Decision makingDecision() = 0;
 
-    ~Player();
+    virtual ~Player() = default;
 };
+
+#endif
