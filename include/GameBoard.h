@@ -29,13 +29,19 @@ public:
 
     void drawCurrentPanel();
 
-    void checkChaosWin();
+    // bool checkChaosWin();
 
-    void checkOrderWin();
+    bool checkOrderWin();
 
-    // void checkResignation();
+    // bool checkGameOver();
 
     // void checkValidMove();
+
+    bool getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, int dy);
+
+    bool checkVecForAligned(vector <Piece> vec);
+
+    void printVectorValue(vector<Piece> vec);
 
     void setPlayerMove(Vector2 mousePos, Piece p);
 

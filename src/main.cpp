@@ -18,14 +18,21 @@ int main() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Chaotic-Order");
     SetTargetFPS(60);
     
-    GameBoard game = GameBoard(10, SCREEN_HEIGHT);
+    GameBoard game = GameBoard(10, SCREEN_HEIGHT);    
 
     while (!WindowShouldClose()) {
+        // if (game.checkGameOver()) {
+        //     break;
+        // }
+
         BeginDrawing();
         ClearBackground(Constants::BG_COLOR);
         game.drawCurrentPanel();
-        game.setPlayerMove(GetMousePosition(), Piece::na);
-        game.printBoard();
+        game.setPlayerMove(GetMousePosition(), Piece::x);
+        // cout << game.getAndCheckDiagonal(6, 1, 9, -1, 1) << endl; 
+        cout << game.checkOrderWin() << endl;
+        // game.checkOrderWin();
+        // game.printBoard();
         EndDrawing();
     }
 

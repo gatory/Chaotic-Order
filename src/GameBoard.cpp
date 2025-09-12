@@ -73,7 +73,6 @@ void GameBoard::drawCurrentPanel() {
                 // DrawTexture(checkTexture, row, col, WHITE);
                 Vector2 center = {(row * cellSize) + (cellSize/2), (col * cellSize) + (cellSize/2)};
                 cell.drawPiece(GAME_BOARD.at(col - 1).at(row - 1), checkTexture, crossTexture, center);
-                // DrawText(coord_str.c_str(), row * cellSize, col * cellSize, 15, WHITE);
             }
         }
     }
@@ -94,6 +93,120 @@ void GameBoard::setPlayerMove(Vector2 mousePos, Piece p) {
         GAME_BOARD[col_idx][row_idx] = p;
     }
 }
+
+void GameBoard::printVectorValue(vector<Piece> vec) {
+    cout << "[";
+    for (int i = 0; i < vec.size(); i++) {
+        if (i == vec.size() - 1) {
+            cout << static_cast<int>(vec.at(i)) << "]";
+            break;    
+        }
+        cout << static_cast<int>(vec.at(i)) << ", ";
+    }
+
+    cout << checkVecForAligned(vec) << endl;;
+}
+
+bool GameBoard::checkVecForAligned(vector<Piece> vec) {
+    int count = 0;
+    for (int i = 0; i < vec.size() - 1; i++) {
+        if (vec.at(i) == vec.at(i+1) && vec.at(i) != Piece::na) {
+            count++;
+            if (count >= 3) {
+                return true;
+            }
+        }
+        else {
+            count = 0;
+        }
+    }
+
+    return false;
+}
+
+bool GameBoard::getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, int dy) {
+    // Vector2 initalPos = {col, rowStart};
+    int vecSize = 4;
+    int step = (rowStart <= rowEnd) ? 1 : -1;
+
+    // printVectorValue(vec);
+    for (int row = rowStart; 
+        (step > 0) ? (row <= rowEnd) : (row >= rowEnd); 
+        row += step) {
+        vector<Piece> vec;
+        for (int i = 0 ; i < vecSize ;i++) {
+            int checkRow = row + (dy * i);
+            int checkCol = col + (dx * i);
+            
+            if (checkRow >= 0 && checkRow < boardSize && 
+                checkCol >= 0 && checkCol < boardSize) {
+                vec.push_back(GAME_BOARD[checkRow][checkCol]);
+            } else {
+                // Skip this diagonal if it goes out of bounds
+                break;
+            }
+        }
+        if (vec.empty()) {
+            cout << "empty" << endl;
+        }
+        // printVectorValue(vec);
+        if (checkVecForAligned(vec)) {
+            return true;
+        }
+        vecSize++;
+    }
+
+    return false;
+}
+
+bool GameBoard::checkOrderWin() {
+    // Check the rows
+    for (int row = 0; row < boardSize; row++) {
+        if (checkVecForAligned(GAME_BOARD[row])) {
+            return true;
+        }
+    }
+
+    // Check the cols
+    int row = 0;
+    while (row != boardSize) {
+        vector<Piece> vec;
+        for (int col = 0 ; col < boardSize; col++) {
+            vec.push_back(GAME_BOARD[col][row]);
+        }
+        // printVectorValue(vec);
+
+        if (checkVecForAligned(vec)) {
+            return true;
+        }
+        row++;
+    }
+
+    // Check Diags
+    if (getAndCheckDiagonal(3, 9, 0, +1, -1) || getAndCheckDiagonal(1, 6, 9, -1, +1) 
+        || getAndCheckDiagonal(6, 0, 0, 1, 1) || getAndCheckDiagonal(3, 8, 9, -1, -1)) {
+        return true;
+    }
+    
+    
+    return false;
+}
+
+// bool GameBoard::checkGameOver() {
+//     if (checkChaosWin()) {
+//         cout << "GGs, Chaos Wins!" << endl;
+//         return true;
+//     } else if (checkOrderWin())
+//     {
+//         cout << "GGs, Order Wins" << endl;
+//         return true;
+//     } else if (IsKeyPressed(KEY_Q)) {
+//         cout << "You Resigned" << endl;
+//         return true;
+//     }
+
+//     return false;
+// }
 
 GameBoard::~GameBoard() {
     UnloadTexture(checkTexture);
