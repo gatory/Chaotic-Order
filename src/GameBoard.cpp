@@ -17,18 +17,25 @@ GameBoard::GameBoard(int size, int windHeight):
     gamePanel(size + 2),
     boardSize(size)
 {
-
+    cellSize = windHeight / gamePanel;
+    
     Image check = LoadImage("./assets/textures/checkImg.png");
-    ImageResize(&check, cellSize, cellSize);
+    ImageResize(&check, cellSize-15, cellSize-15);
     checkTexture = LoadTextureFromImage(check);
     UnloadImage(check);
 
     Image cross = LoadImage("./assets/textures/crossImg.png");
-    ImageResize(&cross, cellSize, cellSize);
+    ImageResize(&cross, cellSize-15, cellSize-15);
     crossTexture = LoadTextureFromImage(cross);
     UnloadImage(cross);
 
-    cellSize = windHeight / gamePanel;
+    if (checkTexture.id == 0) {
+        std::cerr << "Failed to load check texture!" << std::endl;
+    }
+    if (crossTexture.id == 0) {
+        std::cerr << "Failed to load cross texture!" << std::endl;
+    }
+    
     for (int row = 0; row < boardSize; row++) {
         vector<Piece> temp;
         for (int col = 0 ; col < boardSize; col++) {
@@ -63,7 +70,9 @@ void GameBoard::drawCurrentPanel() {
             
             // cout << "( " << row << ", " << col << ")" << endl;
             if (row != 0 && col != 0 && row != 11 && col != 11) {
-                cell.drawPiece(GAME_BOARD.at(col - 1).at(row - 1), checkTexture, crossTexture);
+                // DrawTexture(checkTexture, row, col, WHITE);
+                Vector2 center = {(row * cellSize) + (cellSize/2), (col * cellSize) + (cellSize/2)};
+                cell.drawPiece(GAME_BOARD.at(col - 1).at(row - 1), checkTexture, crossTexture, center);
                 // DrawText(coord_str.c_str(), row * cellSize, col * cellSize, 15, WHITE);
             }
         }

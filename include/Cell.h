@@ -21,7 +21,7 @@ public:
 
     void drawCell();
 
-    void drawPiece(Piece piece, Texture check, Texture cross);
+    void drawPiece(Piece piece, Texture check, Texture cross, Vector2 center);
 
     ~Cell();
 };

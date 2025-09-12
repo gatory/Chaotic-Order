@@ -20,16 +20,20 @@ void Cell::drawCell() {
     DrawRectangle(vec.x, vec.y, size * ratio, size * ratio, color);
 }
 
-void Cell::drawPiece(Piece piece, Texture check, Texture cross) {
+void Cell::drawPiece(Piece piece, Texture check, Texture cross, Vector2 center) {
+    // int centerX = (col * size) + (size / 2.0f);
+    // int centerY = (row * size) + (size / 2.0f);
+    int offset = size/10;
     switch (piece)
     {
     case Piece::o:
-        DrawText("O", vec.x, vec.y, size, WHITE);
-        // DrawTexture(check, vec.x, vec.y, WHITE);
+        // DrawText("O", vec.x, vec.y, size, WHITE);
+        DrawTexture(check, vec.x + offset, vec.y + offset, YELLOW);
+        
         break;
     case Piece::x:
-        DrawText("X", vec.x, vec.y, size, WHITE);
-        // DrawTexture(cross, vec.x, vec.y, WHITE);
+        // DrawText("X", vec.x, vec.y, size, WHITE);
+        DrawTexture(cross, vec.x + offset, vec.y + offset, YELLOW);
         break;
     
     default:
