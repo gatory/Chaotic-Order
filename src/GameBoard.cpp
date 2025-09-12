@@ -4,6 +4,7 @@
 #include "./GameManage/Cell.cpp"
 #include <cstdlib>
 #include <ctime>
+#include <string>
 
 using namespace std;
 
@@ -16,6 +17,17 @@ GameBoard::GameBoard(int size, int windHeight):
     gamePanel(size + 2),
     boardSize(size)
 {
+
+    Image check = LoadImage("./assets/textures/checkImg.png");
+    ImageResize(&check, cellSize, cellSize);
+    checkTexture = LoadTextureFromImage(check);
+    UnloadImage(check);
+
+    Image cross = LoadImage("./assets/textures/crossImg.png");
+    ImageResize(&cross, cellSize, cellSize);
+    crossTexture = LoadTextureFromImage(cross);
+    UnloadImage(cross);
+
     cellSize = windHeight / gamePanel;
     for (int row = 0; row < boardSize; row++) {
         vector<Piece> temp;
@@ -46,6 +58,14 @@ void GameBoard::drawCurrentPanel() {
             int random = rand();
             Cell cell = Cell(row, col, cellSize, random);
             cell.drawCell();
+
+            std::string coord_str = "( " + std::to_string(row) + ", " + std::to_string(col) + " )";
+            
+            // cout << "( " << row << ", " << col << ")" << endl;
+            if (row != 0 && col != 0 && row != 11 && col != 11) {
+                cell.drawPiece(GAME_BOARD.at(col - 1).at(row - 1), checkTexture, crossTexture);
+                // DrawText(coord_str.c_str(), row * cellSize, col * cellSize, 15, WHITE);
+            }
         }
     }
 }

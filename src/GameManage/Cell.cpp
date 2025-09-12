@@ -3,8 +3,7 @@
 Cell::Cell(float x, float y, int cellSize, int random) {
     vec = {x * cellSize, y * cellSize};
     size = cellSize;
-    piece = Piece::na;
-    
+
     if (x == 0 || y == 0 || x == 11 || y == 11 ) {
         ratio = 1;
         color = Constants::GRID_BORDER_COLOR;
@@ -21,8 +20,21 @@ void Cell::drawCell() {
     DrawRectangle(vec.x, vec.y, size * ratio, size * ratio, color);
 }
 
-Piece Cell::getPiece() {
-    return piece;
+void Cell::drawPiece(Piece piece, Texture check, Texture cross) {
+    switch (piece)
+    {
+    case Piece::o:
+        DrawText("O", vec.x, vec.y, size, WHITE);
+        // DrawTexture(check, vec.x, vec.y, WHITE);
+        break;
+    case Piece::x:
+        DrawText("X", vec.x, vec.y, size, WHITE);
+        // DrawTexture(cross, vec.x, vec.y, WHITE);
+        break;
+    
+    default:
+        break;
+    }
 }
 
 Cell::~Cell(){}

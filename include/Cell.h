@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <raylib.h>
+#include <vector>
 #include "Constants.h"
 #include "PieceType.h"
 
@@ -13,7 +14,6 @@ private:
     Color color;
     int size;
     float ratio;
-    Piece piece;
 
 public:
 
@@ -21,7 +21,7 @@ public:
 
     void drawCell();
 
-    Piece getPiece();
+    void drawPiece(Piece piece, Texture check, Texture cross);
 
     ~Cell();
 };

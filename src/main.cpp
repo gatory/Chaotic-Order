@@ -24,7 +24,7 @@ int main() {
         BeginDrawing();
         ClearBackground(Constants::BG_COLOR);
         game.drawCurrentPanel();
-        game.setPlayerMove(GetMousePosition(), Piece::x);
+        game.setPlayerMove(GetMousePosition(), Piece::o);
         game.printBoard();
         EndDrawing();
     }
