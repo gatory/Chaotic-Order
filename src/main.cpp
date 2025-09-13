@@ -29,8 +29,8 @@ int main() {
     SetTargetFPS(60);
     
     GameBoard game = GameBoard(10, SCREEN_HEIGHT);    
-    Human humanPlayer = Human(ObjectiveType::CHAOS, true);
-    Computer computerPlayer = Computer(ObjectiveType::ORDER, false, game);
+    Human humanPlayer = Human(ObjectiveType::ORDER, true);
+    Computer computerPlayer = Computer(ObjectiveType::CHAOS, false, game);
 
     // Checks
     assert(humanPlayer.getObjective() != computerPlayer.getObjective());

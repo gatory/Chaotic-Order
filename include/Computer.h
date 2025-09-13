@@ -14,6 +14,10 @@ public:
     Computer();
 
     Computer(ObjectiveType objective, bool hasNextTurn, GameBoard &game);
+    
+    bool wouldCreateWinningSequence(int row, int col, Piece piece, int targetAlign);
+
+    Decision considerObjective(ObjectiveType objective, Decision decision);
 
     struct Decision makingDecision() override;
 };

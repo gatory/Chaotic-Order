@@ -113,7 +113,7 @@ bool GameBoard::checkVecForAligned(vector<Piece> vec, int max) {
     for (int i = 0; i < vec.size() - 1; i++) {
         if (vec.at(i) == vec.at(i+1) && vec.at(i) != Piece::na) {
             count++;
-            if (count >= max) {
+            if (count >= 3) {
                 return true;
             }
         }
@@ -271,7 +271,7 @@ bool GameBoard::testOrderWin(vector<vector<Piece>>& testBoard, int max) {
 
 bool GameBoard::testGetAndCheckDiagonal(vector<vector<Piece>>& testBoard, 
                             int rowStart, int rowEnd, int col, 
-                            int dx, int dy, int max = 3) 
+                            int dx, int dy, int max) 
 {
     // Vector2 initalPos = {col, rowStart};
     int vecSize = 4;
