@@ -31,7 +31,8 @@ BUILD_DIR = build
 TARGET = $(BUILD_DIR)/game$(EXT)
 
 # Find all .cpp files in src directory
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+# SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+SOURCES = $(shell find $(SRC_DIR) -name "*.cpp")
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
 # Default target
@@ -46,7 +47,10 @@ $(TARGET): $(OBJECTS) | $(BUILD_DIR)
 	$(CXX) $(LDFLAGS) $(OBJECTS) -o $@ $(LIBS)
 
 # Compile source files to object files
+# $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
+# 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 # Clean build files
