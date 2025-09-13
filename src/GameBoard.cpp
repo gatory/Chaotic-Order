@@ -108,12 +108,12 @@ void GameBoard::printVectorValue(vector<Piece> vec) {
     cout << checkVecForAligned(vec) << endl;;
 }
 
-bool GameBoard::checkVecForAligned(vector<Piece> vec) {
+bool GameBoard::checkVecForAligned(vector<Piece> vec, int max) {
     int count = 0;
     for (int i = 0; i < vec.size() - 1; i++) {
         if (vec.at(i) == vec.at(i+1) && vec.at(i) != Piece::na) {
             count++;
-            if (count >= 3) {
+            if (count >= max) {
                 return true;
             }
         }
@@ -125,7 +125,7 @@ bool GameBoard::checkVecForAligned(vector<Piece> vec) {
     return false;
 }
 
-bool GameBoard::getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, int dy) {
+bool GameBoard::getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, int dy, int max) {
     // Vector2 initalPos = {col, rowStart};
     int vecSize = 4;
     int step = (rowStart <= rowEnd) ? 1 : -1;
@@ -160,10 +160,10 @@ bool GameBoard::getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, i
     return false;
 }
 
-bool GameBoard::checkOrderWin() {
+bool GameBoard::checkOrderWin(int max) {
     // Check the rows
     for (int row = 0; row < boardSize; row++) {
-        if (checkVecForAligned(GAME_BOARD[row])) {
+        if (checkVecForAligned(GAME_BOARD[row], max)) {
             return true;
         }
     }
@@ -177,15 +177,15 @@ bool GameBoard::checkOrderWin() {
         }
         // printVectorValue(vec);
 
-        if (checkVecForAligned(vec)) {
+        if (checkVecForAligned(vec, max)) {
             return true;
         }
         row++;
     }
 
     // Check Diags
-    if (getAndCheckDiagonal(3, 9, 0, +1, -1) || getAndCheckDiagonal(6, 1, 9, -1, +1) 
-        || getAndCheckDiagonal(6, 0, 0, 1, 1) || getAndCheckDiagonal(3, 8, 9, -1, -1)) {
+    if (getAndCheckDiagonal(3, 9, 0, +1, -1, max) || getAndCheckDiagonal(6, 1, 9, -1, +1, max) 
+        || getAndCheckDiagonal(6, 0, 0, 1, 1, max) || getAndCheckDiagonal(3, 8, 9, -1, -1, max)) {
         return true;
     }
     
@@ -231,6 +231,80 @@ bool GameBoard::checkValidMove(int x, int y) {
 
 int GameBoard::getCellSize() {
     return cellSize;
+}
+
+vector<vector<Piece>>& GameBoard::getGameBoard() {
+    return GAME_BOARD;
+};
+
+bool GameBoard::testOrderWin(vector<vector<Piece>>& testBoard, int max) {
+    // Check the rows
+    for (int row = 0; row < boardSize; row++) {
+        if (checkVecForAligned(testBoard[row], max)) {
+            return true;
+        }
+    }
+
+    // Check the cols
+    int row = 0;
+    while (row != boardSize) {
+        vector<Piece> vec;
+        for (int col = 0 ; col < boardSize; col++) {
+            vec.push_back(testBoard[col][row]);
+        }
+        // printVectorValue(vec);
+
+        if (checkVecForAligned(vec, max)) {
+            return true;
+        }
+        row++;
+    }
+
+    // Check Diags
+    if (testGetAndCheckDiagonal(testBoard,3, 9, 0, +1, -1, max) || testGetAndCheckDiagonal(testBoard, 6, 1, 9, -1, +1, max) 
+        || testGetAndCheckDiagonal(testBoard,6, 0, 0, 1, 1, max) || testGetAndCheckDiagonal(testBoard, 3, 8, 9, -1, -1, max)) {
+        return true;
+    }
+    
+    return false;
+}
+
+bool GameBoard::testGetAndCheckDiagonal(vector<vector<Piece>>& testBoard, 
+                            int rowStart, int rowEnd, int col, 
+                            int dx, int dy, int max = 3) 
+{
+    // Vector2 initalPos = {col, rowStart};
+    int vecSize = 4;
+    int step = (rowStart <= rowEnd) ? 1 : -1;
+
+    // printVectorValue(vec);
+    for (int row = rowStart; 
+        (step > 0) ? (row <= rowEnd) : (row >= rowEnd); 
+        row += step) {
+        vector<Piece> vec;
+        for (int i = 0 ; i < vecSize ;i++) {
+            int checkRow = row + (dy * i);
+            int checkCol = col + (dx * i);
+            
+            if (checkRow >= 0 && checkRow < boardSize && 
+                checkCol >= 0 && checkCol < boardSize) {
+                vec.push_back(testBoard[checkRow][checkCol]);
+            } else {
+                // Skip this diagonal if it goes out of bounds
+                break;
+            }
+        }
+        if (vec.empty()) {
+            cout << "empty" << endl;
+        }
+        // printVectorValue(vec);
+        if (checkVecForAligned(vec, max)) {
+            return true;
+        }
+        vecSize++;
+    }
+
+    return false;
 }
 
 GameBoard::~GameBoard() {

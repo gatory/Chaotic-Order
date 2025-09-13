@@ -31,7 +31,7 @@ public:
 
     virtual struct Decision makingDecision() = 0;
 
-    ~Player() = default;
+    virtual ~Player() = default;
 
 };
 

@@ -9,14 +9,13 @@
 class Computer: public Player
 {
 private:
-    GameBoard game;
+    GameBoard &game;
 public:
     Computer();
 
-    Computer(ObjectiveType objective, bool hasNextTurn, GameBoard game);
+    Computer(ObjectiveType objective, bool hasNextTurn, GameBoard &game);
 
     struct Decision makingDecision() override;
-    bool getVecOnBoard(int rowStart, int rowEnd, int col, int dx, int dy);
 };
 
 #endif

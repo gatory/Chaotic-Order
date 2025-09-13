@@ -31,21 +31,30 @@ public:
 
     bool checkChaosWin();
 
-    bool checkOrderWin();
+    bool checkOrderWin(int max = 3);
 
     bool checkGameOver();
 
     bool checkValidMove(int x, int y);
 
-    bool getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, int dy);
+    bool getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, int dy, int max = 3);
 
-    bool checkVecForAligned(vector <Piece> vec);
+    bool checkVecForAligned(vector <Piece> vec, int max = 3);
 
     void printVectorValue(vector<Piece> vec);
 
     void setPlayerMove(Vector2 mousePos, Piece piece);
 
     int getCellSize();
+
+    bool testOrderWin(vector<vector<Piece>>& testBoard, int max = 4);
+
+    bool testGetAndCheckDiagonal(vector<vector<Piece>>& testBoard, 
+                                int rowStart, int rowEnd, int col, 
+                                int dx, int dy, int max = 3);
+
+
+    vector<vector<Piece>>& getGameBoard();
 
     ~GameBoard();
 };
