@@ -20,7 +20,7 @@ void Cell::drawCell() {
     DrawRectangle(vec.x, vec.y, size * ratio, size * ratio, color);
 }
 
-void Cell::drawPiece(Piece piece, Texture check, Texture cross, Vector2 center) {
+void Cell::drawPiece(Piece piece, Texture check, Texture cross) {
     // int centerX = (col * size) + (size / 2.0f);
     // int centerY = (row * size) + (size / 2.0f);
     int offset = size/10;

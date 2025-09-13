@@ -45,6 +45,8 @@ public:
 
     void setPlayerMove(Vector2 mousePos, Piece piece);
 
+    int getCellSize();
+
     ~GameBoard();
 };
 

@@ -8,6 +8,8 @@
 class Human: public Player
 {
 public:
+    Human();
+    
     Human(ObjectiveType objective, bool hasNextTurn);
 
     struct Decision makingDecision() override;

@@ -4,27 +4,35 @@
 #include <iostream>
 #include "ObjectiveType.h"
 #include "PieceType.h"
+#include <raylib.h>
 
 using namespace std;
 
 struct Decision {
-    int xIndx;
-    int yIndx;
+    Vector2 pos = {-10, -10};
     Piece piece;
 };
 
 class Player
 {
-private:
+protected:
     ObjectiveType objective;
     bool hasNextTurn;
-    /* data */
 public:
+    Player();
+    
     Player(ObjectiveType objective, bool hasNextTurn);
+
+    ObjectiveType getObjective();
+
+    bool getHasNextTurn();
+
+    void setHasNextTurn(bool value);
 
     virtual struct Decision makingDecision() = 0;
 
-    virtual ~Player() = default;
+    ~Player() = default;
+
 };
 
 #endif

@@ -2,8 +2,9 @@
 #define OBJECTIVETYPE_H
 
 enum ObjectiveType {
-    ORDER = 0,
-    CHAOS = 1
+    DEFAULT = 0,
+    ORDER = 1,
+    CHAOS = 2,
 };
 
 #endif

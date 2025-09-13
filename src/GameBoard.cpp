@@ -1,7 +1,7 @@
 #include "../include/GameBoard.h"
 #include "../include/PieceType.h"
 #include "../include/Constants.h"
-#include "./GameManage/Cell.cpp"
+#include "../include/Cell.h"
 #include <cstdlib>
 #include <ctime>
 #include <string>
@@ -56,6 +56,7 @@ void GameBoard::printBoard() {
         }
         cout << endl;
     }
+    cout << endl;
 }
 
 void GameBoard::drawCurrentPanel() {
@@ -71,8 +72,8 @@ void GameBoard::drawCurrentPanel() {
             // cout << "( " << row << ", " << col << ")" << endl;
             if (row != 0 && col != 0 && row != 11 && col != 11) {
                 // DrawTexture(checkTexture, row, col, WHITE);
-                Vector2 center = {(row * cellSize) + (cellSize/2), (col * cellSize) + (cellSize/2)};
-                cell.drawPiece(GAME_BOARD.at(col - 1).at(row - 1), checkTexture, crossTexture, center);
+                // Vector2 center = {(row * cellSize) + (cellSize/2), (col * cellSize) + (cellSize/2)};
+                cell.drawPiece(GAME_BOARD.at(col - 1).at(row - 1), checkTexture, crossTexture);
             }
         }
     }
@@ -89,10 +90,8 @@ void GameBoard::setPlayerMove(Vector2 mousePos, Piece piece) {
         col_idx -= 1;
     }
 
-    if (row_idx != -1 && col_idx != -1 && IsMouseButtonDown(0) && checkValidMove(row_idx, col_idx)) {
-        GAME_BOARD[col_idx][row_idx] = Piece::o;
-    } else if (row_idx != -1 && col_idx != -1 && IsMouseButtonDown(1)&& checkValidMove(row_idx, col_idx)) {
-        GAME_BOARD[col_idx][row_idx] = Piece::x;
+    if (row_idx != -1 && col_idx != -1) {
+        GAME_BOARD[col_idx][row_idx] = piece;
     }
 }
 
@@ -185,7 +184,7 @@ bool GameBoard::checkOrderWin() {
     }
 
     // Check Diags
-    if (getAndCheckDiagonal(3, 9, 0, +1, -1) || getAndCheckDiagonal(1, 6, 9, -1, +1) 
+    if (getAndCheckDiagonal(3, 9, 0, +1, -1) || getAndCheckDiagonal(6, 1, 9, -1, +1) 
         || getAndCheckDiagonal(6, 0, 0, 1, 1) || getAndCheckDiagonal(3, 8, 9, -1, -1)) {
         return true;
     }
@@ -223,10 +222,15 @@ bool GameBoard::checkGameOver() {
 }
 
 bool GameBoard::checkValidMove(int x, int y) {
-    if (GAME_BOARD[y][x] == Piece::na) {
-        return true;
-    } 
-    return false;
+    if (x < 0 || y < 0 || x >= boardSize || y >= boardSize) {
+        // cout << "NOT VALID" << x << y;
+        return false;
+    }
+    return GAME_BOARD[y][x] == Piece::na;
+}
+
+int GameBoard::getCellSize() {
+    return cellSize;
 }
 
 GameBoard::~GameBoard() {
