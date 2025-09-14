@@ -29,8 +29,8 @@ int main() {
     SetTargetFPS(60);
     
     GameBoard game = GameBoard(10, SCREEN_HEIGHT);    
-    Human humanPlayer = Human(ObjectiveType::CHAOS);
-    Computer computerPlayer = Computer(ObjectiveType::ORDER, game);
+    Human humanPlayer = Human(ObjectiveType::ORDER);
+    Computer computerPlayer = Computer(ObjectiveType::CHAOS, game);
 
     // Checks
     assert(humanPlayer.getObjective() != computerPlayer.getObjective());
@@ -78,7 +78,7 @@ int main() {
         // game.setPlayerMove(GetMousePosition(), Piece::na);
         // cout << game.checkOrderWin() << endl;
         // game.checkOrderWin();
-        // game.printBoard();
+        game.printBoard();
         EndDrawing();
     }
 
