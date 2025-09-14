@@ -1,16 +1,7 @@
 #include "../../include/Player.h"
 
-Player::Player(ObjectiveType objective, bool hasNextTurn): objective(objective), 
-                                                           hasNextTurn(hasNextTurn){}
+Player::Player(ObjectiveType objective): objective(objective) {}
 
 ObjectiveType Player::getObjective() {
     return objective;
-}
-
-bool Player::getHasNextTurn() {
-    return hasNextTurn;
-}
-
-void Player::setHasNextTurn(bool value) {
-    hasNextTurn = value;
 }

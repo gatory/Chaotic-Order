@@ -17,17 +17,12 @@ class Player
 {
 protected:
     ObjectiveType objective;
-    bool hasNextTurn;
 public:
     Player();
     
-    Player(ObjectiveType objective, bool hasNextTurn);
+    Player(ObjectiveType objective);
 
     ObjectiveType getObjective();
-
-    bool getHasNextTurn();
-
-    void setHasNextTurn(bool value);
 
     virtual struct Decision makingDecision() = 0;
 

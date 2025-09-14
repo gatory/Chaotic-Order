@@ -29,12 +29,11 @@ int main() {
     SetTargetFPS(60);
     
     GameBoard game = GameBoard(10, SCREEN_HEIGHT);    
-    Human humanPlayer = Human(ObjectiveType::ORDER, true);
-    Computer computerPlayer = Computer(ObjectiveType::CHAOS, false, game);
+    Human humanPlayer = Human(ObjectiveType::ORDER);
+    Computer computerPlayer = Computer(ObjectiveType::CHAOS, game);
 
     // Checks
     assert(humanPlayer.getObjective() != computerPlayer.getObjective());
-    assert(humanPlayer.getHasNextTurn() != computerPlayer.getHasNextTurn());
     
     while (!WindowShouldClose()) {
         if (game.checkGameOver()) {
@@ -59,7 +58,6 @@ int main() {
             if (dec.piece != Piece::na && game.checkValidMove(dec.pos.x, dec.pos.y)) {
                 dec.pos.x = (dec.pos.x + 1) * game.getCellSize();
                 dec.pos.y = (dec.pos.y + 1) * game.getCellSize();
-                // cout << dec.pos.x << ", " << dec.pos.y << ", " << dec.piece << endl;
                 game.setPlayerMove(dec.pos, dec.piece);
                 humanTurn = true;
             }

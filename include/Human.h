@@ -10,7 +10,7 @@ class Human: public Player
 public:
     Human();
     
-    Human(ObjectiveType objective, bool hasNextTurn);
+    Human(ObjectiveType objective);
 
     struct Decision makingDecision() override;
 };

@@ -1,8 +1,6 @@
 #include "../../include/Human.h"
 
-Human::Human(): Player(ObjectiveType::DEFAULT, false) {}
-
-Human::Human(ObjectiveType objective, bool hasNextTurn): Player(objective, hasNextTurn) {}
+Human::Human(ObjectiveType objective): Player(objective) {}
 
 struct Decision Human::makingDecision() {
     Decision decision;
