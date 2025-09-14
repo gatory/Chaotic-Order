@@ -77,54 +77,13 @@ Decision Computer::considerObjective(ObjectiveType objective, Decision decision)
 
 struct Decision Computer::makingDecision() {
     Decision decision;
-        
-    // Checks for immediate win
-    for (int row = 0; row < game.getGameBoard().size(); row++) {
-        for (int col = 0; col < game.getGameBoard()[0].size(); col++) {
-            if (game.getGameBoard()[row][col] == Piece::na) {
-                // Test O piece
-                if (wouldCreateWinningSequence(row, col, Piece::o, 5)) {
-                    decision.pos = {(float)col, (float)row};
-                    decision.piece = Piece::o;
-                    return considerObjective(objective, decision);
-                }
-                
-                // Test X piece
-                if (wouldCreateWinningSequence(row, col, Piece::x, 5)) {
-                    decision.pos = {(float)col, (float)row};
-                    decision.piece = Piece::x;
-                    return considerObjective(objective, decision);
-                }
-            }
+    for (int i = 5; i > 1 ; i--) {
+        decision = checkWinAtTarget(i);
+
+        if (decision.piece != Piece::na) {
+            return decision;
         }
     }
-
-    // int smallestPotentialCountSoFar = -1;
-    // Vector2 bestPos;
-    // for (int row = 0; row < game.getGameBoard().size(); row++) {
-    //     for (int col = 0; col < game.getGameBoard()[0].size(); col++) {
-    //         if (game.getGameBoard()[row][col] == Piece::na) {
-    //             // Test O piece
-    //             int oSmallestPotential = getPotential(row, col, Piece::o, 5);
-    //             int xSmallestPotential = getPotential(row, col, Piece::x, 5);
-    //             cout << "[" << col << ", " << row << "]" << endl;
-    //             cout << "O: " << oSmallestPotential  << " X: " << xSmallestPotential << endl;
-
-    //             // if (oSmallestPotential != -1 ) {
-    //             //     decision.pos = {(float)col, (float)row};
-    //             //     decision.piece = Piece::o;
-    //             //     return considerObjective(objective, decision);
-    //             // }
-                
-    //             // // Test X piece
-    //             // if (wouldCreateWinningSequence(row, col, Piece::x, 5)) {
-    //             //     decision.pos = {(float)col, (float)row};
-    //             //     decision.piece = Piece::x;
-    //             //     return considerObjective(objective, decision);
-    //             // }
-    //         }
-    //     }
-    // }
 
     // If no winning move, make random valid move
     vector<pair<int, int>> validMoves;
@@ -146,107 +105,33 @@ struct Decision Computer::makingDecision() {
         decision.piece = (randomPiece == 0) ? Piece::o : Piece::x;
         decision.pos = {(float)randCol, (float)randRow};
     }
-
+    
     return considerObjective(objective, decision);
 }
 
-
-int Computer::getPotential(int row, int col, Piece piece, int targetAlign) {
-    vector<vector<Piece>> GAME_BOARD = game.getGameBoard();
-
-    if (GAME_BOARD[row][col] != Piece::na) {
-        return -1;
-    }
+Decision Computer::checkWinAtTarget(int target) {
+    Decision decision;
+    decision.piece = Piece::na;
     
-    // bool isWinning = false;
-    // int count = 1;
-    int smallestPotentialCount = -1;
-
-    int potentialCount = 1;
-    // Check horizontal
-    // Check left & right
-    for (int c = col - 1; c >= 0; c--) {
-        if (GAME_BOARD[row][c] == Piece::na) {
-            potentialCount++;
-        } else if (GAME_BOARD[row][c] != piece) {
-            break;
+    for (int row = 0; row < game.getGameBoard().size(); row++) {
+        for (int col = 0; col < game.getGameBoard()[0].size(); col++) {
+            if (game.getGameBoard()[row][col] == Piece::na) {
+                // Test O piece
+                if (wouldCreateWinningSequence(row, col, Piece::o, target)) {
+                    decision.pos = {(float)col, (float)row};
+                    decision.piece = Piece::o;
+                    return considerObjective(objective, decision);
+                }
+                
+                // Test X piece
+                if (wouldCreateWinningSequence(row, col, Piece::x, target)) {
+                    decision.pos = {(float)col, (float)row};
+                    decision.piece = Piece::x;
+                    return considerObjective(objective, decision);
+                }
+            }
         }
     }
-    for (int c = col + 1; c < GAME_BOARD.size(); c++) {
-        if (GAME_BOARD[row][c] == Piece::na) {
-            potentialCount++;
-        } else if (GAME_BOARD[row][c] != piece) {
-            break;
-        }
-    }
-    if (smallestPotentialCount == -1 || potentialCount < smallestPotentialCount)  {
-        smallestPotentialCount = potentialCount;
-    }
-    
-    // // Check vertical
-    // // Check up & down
-    // potentialCount = 1;
-    // for (int r = row - 1; r >= 0; r--) {
-    //     if (GAME_BOARD[r][col] == Piece::na) {
-    //         potentialCount++;
-    //     } else if (GAME_BOARD[r][col] != piece) {
-    //         break;
-    //     }
-    // }
-    // for (int r = row + 1; r < GAME_BOARD.size(); r++) {
-    //     if (GAME_BOARD[r][col] == Piece::na) {
-    //         potentialCount++;
-    //     } else if (GAME_BOARD[r][col] != piece) {
-    //         break;
-    //     }
-    // }
-    // if (smallestPotentialCount == -1 || potentialCount < smallestPotentialCount)  {
-    //     smallestPotentialCount = potentialCount;
-    // }
 
-    // // Check diagonal (up-left to down-right)
-    // // Check up-left and down-right
-    // potentialCount = 1;
-    // for (int r = row - 1, c = col - 1; r >= 0 && c >= 0; r--, c--) {
-    //     if (GAME_BOARD[r][c] == Piece::na) {
-    //         potentialCount++;
-    //     } else if (GAME_BOARD[r][c] != piece) {
-    //         break;
-    //     }
-    // }
-    // for (int r = row + 1, c = col + 1; r < GAME_BOARD.size() && c < GAME_BOARD.size(); r++, c++) {
-    //     if (GAME_BOARD[r][c] == Piece::na) {
-    //         potentialCount++;
-    //     } else if (GAME_BOARD[r][c] != piece) {
-    //         break;
-    //     }
-    // }
-    // if (smallestPotentialCount == -1 || potentialCount < smallestPotentialCount)  {
-    //     smallestPotentialCount = potentialCount;
-    // }
-
-    
-    // // Check diagonal (up-right to down-left)
-    // // Check up-right and down-left
-    // potentialCount = 1;
-    // for (int r = row - 1, c = col + 1; r >= 0 && c < GAME_BOARD.size(); r--, c++) {
-    //     if (GAME_BOARD[r][c] == Piece::na) {
-    //         potentialCount++;
-    //     } else if (GAME_BOARD[r][c] != piece) {
-    //         break;
-    //     }
-    // }
-    // for (int r = row + 1, c = col - 1; r < GAME_BOARD.size() && c >= 0; r++, c--) {
-    //     if (GAME_BOARD[r][c] == Piece::na) {
-    //         potentialCount++;
-    //     } else if (GAME_BOARD[r][c] != piece) {
-    //         break;
-    //     }
-    // }
-
-    // if (smallestPotentialCount == -1 || potentialCount < smallestPotentialCount)  {
-    //     smallestPotentialCount = potentialCount;
-    // }
-    
-    return smallestPotentialCount;
+    return decision;
 }

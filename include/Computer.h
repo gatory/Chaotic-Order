@@ -21,7 +21,7 @@ public:
 
     struct Decision makingDecision() override;
 
-    int getPotential(int row, int col, Piece piece, int targetAlign);
+    Decision checkWinAtTarget(int target);
 };
 
 #endif
