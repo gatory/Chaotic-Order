@@ -29,6 +29,15 @@ GameBoard::GameBoard(int size, int windHeight):
     crossTexture = LoadTextureFromImage(cross);
     UnloadImage(cross);
 
+    Image gameLogo= LoadImage("./assets/textures/gameLogo.png");
+    ImageResize(&gameLogo, 250, 250);
+    logoTexture = LoadTextureFromImage(gameLogo);
+    UnloadImage(gameLogo);
+
+    gameFont = LoadFontEx("./assets/fonts/PressStart2P-Regular.ttf", 25, 0, 250);
+
+    clickSound = LoadSound("./assets/sounds/clickSound.wav");
+
     if (checkTexture.id == 0) {
         std::cerr << "Failed to load check texture!" << std::endl;
     }
@@ -92,6 +101,7 @@ void GameBoard::setPlayerMove(Vector2 mousePos, Piece piece) {
 
     if (row_idx != -1 && col_idx != -1) {
         GAME_BOARD[col_idx][row_idx] = piece;
+        PlaySound(clickSound);
     }
 }
 
@@ -237,8 +247,26 @@ vector<vector<Piece>>& GameBoard::getGameBoard() {
     return GAME_BOARD;
 }
 
+void GameBoard::drawLogoAndWords(ObjectiveType humanObj) {
+    DrawTexture(logoTexture, 725, 25, WHITE);
+    if (humanObj == ObjectiveType::ORDER) {
+        DrawTextEx(gameFont, "YOU:", (Vector2){ 750, 325 }, (float)gameFont.baseSize, 2, WHITE);
+        DrawTextEx(gameFont, "ORDER", (Vector2){ 750, 400 }, (float)gameFont.baseSize, 2, LIME);
+        DrawTextEx(gameFont, "BOT:", (Vector2){ 750, 500 }, (float)gameFont.baseSize, 2, WHITE);
+        DrawTextEx(gameFont, "CHAOS", (Vector2){ 750, 575 }, (float)gameFont.baseSize, 2, RED);
+    } else {
+        DrawTextEx(gameFont, "YOU:", (Vector2){ 750, 325 }, (float)gameFont.baseSize, 2, WHITE);
+        DrawTextEx(gameFont, "CHAOS", (Vector2){ 750, 400 }, (float)gameFont.baseSize, 2, RED);
+        DrawTextEx(gameFont, "BOT:", (Vector2){ 750, 500 }, (float)gameFont.baseSize, 2, WHITE);
+        DrawTextEx(gameFont, "ORDER", (Vector2){ 750, 575}, (float)gameFont.baseSize, 2, LIME);
+    }
+}
+
 GameBoard::~GameBoard() {
     UnloadTexture(checkTexture);
     UnloadTexture(crossTexture);
+    UnloadTexture(logoTexture);
+    UnloadFont(gameFont);
+    UnloadSound(clickSound); 
 }
 

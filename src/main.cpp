@@ -25,12 +25,13 @@ int main() {
     bool humanTurn = randomNextTurn % 2 == 0;
 
     cout << "Starting the game..." << endl;
+    InitAudioDevice();
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Chaotic-Order");
     SetTargetFPS(60);
     
     GameBoard game = GameBoard(10, SCREEN_HEIGHT);    
-    Human humanPlayer = Human(ObjectiveType::ORDER);
-    Computer computerPlayer = Computer(ObjectiveType::CHAOS, game);
+    Human humanPlayer = Human(randomObjective % 2 == 0 ? ObjectiveType::ORDER : ObjectiveType::CHAOS);
+    Computer computerPlayer = Computer(randomObjective % 2 == 0 ? ObjectiveType::CHAOS : ObjectiveType::ORDER, game);
 
     // Checks
     assert(humanPlayer.getObjective() != computerPlayer.getObjective());
@@ -75,11 +76,13 @@ int main() {
         BeginDrawing();
         ClearBackground(Constants::BG_COLOR);
         game.drawCurrentPanel();
+        game.drawLogoAndWords(humanPlayer.getObjective());
+        cout << GetMousePosition().x << ", " << GetMousePosition().y << endl;
         // game.setPlayerMove(GetMousePosition(), Piece::na);
         // cout << game.checkOrderWin() << endl;
         // game.checkOrderWin();
-        game.printBoard();
         EndDrawing();
+        game.printBoard();
     }
 
     CloseWindow();

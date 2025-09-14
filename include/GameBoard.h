@@ -5,6 +5,7 @@
 #include <raylib.h>
 #include <vector>
 #include "PieceType.h"
+#include "ObjectiveType.h"
 
 using namespace std;
 
@@ -19,6 +20,9 @@ private:
 
     Texture2D checkTexture;
     Texture2D crossTexture;
+    Texture2D logoTexture;
+    Font gameFont;
+    Sound clickSound;
     static vector<vector<Piece>> GAME_BOARD;
     
 
@@ -28,6 +32,8 @@ public:
     void printBoard();
 
     void drawCurrentPanel();
+
+    void drawLogoAndWords(ObjectiveType humanObj);
 
     bool checkChaosWin();
 

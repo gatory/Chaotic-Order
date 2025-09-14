@@ -19,7 +19,7 @@ public:
 
     Decision considerObjective(ObjectiveType objective, Decision decision);
 
-    struct Decision makingDecision() override;
+    Decision makingDecision() override;
 
     Decision checkWinAtTarget(int target);
 };
