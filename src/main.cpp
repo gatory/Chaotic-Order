@@ -4,7 +4,6 @@
 #include "../include/Constants.h"
 #include "../include/Cell.h"
 #include "../include/PieceType.h"
-// #include "../include/Player.h"
 #include "../include/Human.h"
 #include "../include/Computer.h"
 #include <random>
@@ -50,7 +49,6 @@ int main() {
             if (dec.piece != Piece::na && game.checkValidMove(gridX, gridY)) {
                 game.setPlayerMove(dec.pos, dec.piece);
                 humanTurn = false;
-                // cout << gridX << ", " << gridY << endl;
             }
         } else {
             cout << "Computer Turn" << endl;
@@ -62,25 +60,12 @@ int main() {
                 game.setPlayerMove(dec.pos, dec.piece);
                 humanTurn = true;
             }
-            // Decision dec = computerPlayer.makingDecision();
-            
-            // if (dec.piece != Piece::na && game.checkValidMove(dec.pos.x, dec.pos.y)) {
-            //     // humanPlayer.setHasNextTurn(true);
-            //     // computerPlayer.setHasNextTurn(false);
-            //     dec.pos.x *= game.getCellSize();
-            //     dec.pos.y *= game.getCellSize();
-            //     game.setPlayerMove(dec.pos, dec.piece);
-            // }
         }
 
         BeginDrawing();
         ClearBackground(Constants::BG_COLOR);
         game.drawCurrentPanel();
         game.drawLogoAndWords(humanPlayer.getObjective());
-        cout << GetMousePosition().x << ", " << GetMousePosition().y << endl;
-        // game.setPlayerMove(GetMousePosition(), Piece::na);
-        // cout << game.checkOrderWin() << endl;
-        // game.checkOrderWin();
         EndDrawing();
         game.printBoard();
     }

@@ -78,10 +78,7 @@ void GameBoard::drawCurrentPanel() {
 
             std::string coord_str = "( " + std::to_string(row) + ", " + std::to_string(col) + " )";
             
-            // cout << "( " << row << ", " << col << ")" << endl;
             if (row != 0 && col != 0 && row != 11 && col != 11) {
-                // DrawTexture(checkTexture, row, col, WHITE);
-                // Vector2 center = {(row * cellSize) + (cellSize/2), (col * cellSize) + (cellSize/2)};
                 cell.drawPiece(GAME_BOARD.at(col - 1).at(row - 1), checkTexture, crossTexture);
             }
         }
@@ -136,11 +133,9 @@ bool GameBoard::checkVecForAligned(vector<Piece> vec) {
 }
 
 bool GameBoard::getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, int dy) {
-    // Vector2 initalPos = {col, rowStart};
     int vecSize = 4;
     int step = (rowStart <= rowEnd) ? 1 : -1;
 
-    // printVectorValue(vec);
     for (int row = rowStart; 
         (step > 0) ? (row <= rowEnd) : (row >= rowEnd); 
         row += step) {
@@ -160,7 +155,6 @@ bool GameBoard::getAndCheckDiagonal(int rowStart, int rowEnd, int col, int dx, i
         if (vec.empty()) {
             cout << "empty" << endl;
         }
-        // printVectorValue(vec);
         if (checkVecForAligned(vec)) {
             return true;
         }
@@ -185,7 +179,6 @@ bool GameBoard::checkOrderWin() {
         for (int col = 0 ; col < boardSize; col++) {
             vec.push_back(GAME_BOARD[col][row]);
         }
-        // printVectorValue(vec);
 
         if (checkVecForAligned(vec)) {
             return true;
@@ -233,7 +226,6 @@ bool GameBoard::checkGameOver() {
 
 bool GameBoard::checkValidMove(int x, int y) {
     if (x < 0 || y < 0 || x >= boardSize || y >= boardSize) {
-        // cout << "NOT VALID" << x << y;
         return false;
     }
     return GAME_BOARD[y][x] == Piece::na;
